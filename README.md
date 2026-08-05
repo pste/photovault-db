@@ -20,11 +20,11 @@ cp .env.dist .env
 Poi si compila `.env` con i parametri di connessione:
 
 ```
-PG_DEV_HOST=localhost
-PG_DEV_PORT=5432
-PG_DEV_DB=photovault
-PG_DEV_USER=photovault
-PG_DEV_PASSWORD=
+PG_HOST=localhost
+PG_PORT=5432
+PG_DB=photovault
+PG_USER=photovault
+PG_PASSWORD=
 ```
 
 ## Postgres locale
@@ -61,6 +61,10 @@ Sul cluster si passa da un port-forward:
 kubectl -n photovault port-forward deployment/postgres 5432:5432
 node app.js -e local up
 ```
+
+Sono le stesse variabili: con il port-forward attivo, `localhost:5432` **è** il database del
+cluster. Vanno quindi valorizzate con le credenziali del secret `photovault-pgcreds`, non con
+quelle dello sviluppo — per questo non si chiamano più `PG_DEV_*`.
 
 ## Come si scrive una migration
 
