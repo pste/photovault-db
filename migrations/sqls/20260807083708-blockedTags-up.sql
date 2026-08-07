@@ -1,0 +1,13 @@
+-- Un tag bloccato resta in archivio ma nessun job puo' piu' assegnarlo.
+--
+-- Serve perche' una correzione a mano non deve essere disfatta dal giro dopo.
+-- Il 2026-08-06 il job dei luoghi ha creato "Chas" con 306 foto e "Medea" con
+-- 3.684, tutte sbagliate: cancellarle e basta significherebbe ritrovarsele alla
+-- prima rielaborazione di quei media. Il flag sta sul tag e non sulla singola
+-- assegnazione perche' i casi veri sono di massa -- quei due nomi sono sbagliati
+-- ovunque, non su una foto sola -- e cosi' toglierli costa una riga.
+--
+-- Cambiare categoria non basta da solo: tags."name" e' unico globalmente, quindi
+-- spostare "martin" da place a person lascerebbe il job dei luoghi libero di
+-- ritrovare quella stessa riga e riattaccarci le foto.
+ALTER TABLE tags ADD COLUMN blocked boolean NOT NULL DEFAULT false;
